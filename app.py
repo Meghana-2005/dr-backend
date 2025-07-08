@@ -5,12 +5,24 @@ from tensorflow.keras.models import load_model
 from PIL import Image
 import numpy as np
 import io
+import os
+import urllib.request
 
 app = Flask(__name__)
 CORS(app)
 
-# Load model
-model = load_model('highest93ri.h5')
+# Model download details
+MODEL_URL = "https://drive.google.com/uc?export=download&id=1gISF_QUZHIOyvOurwboXi21nuGIOMqHf"
+MODEL_PATH = "highest93ri.h5"
+
+# Download the model if it's not present
+if not os.path.exists(MODEL_PATH):
+    print("Downloading model from Google Drive...")
+    urllib.request.urlretrieve(MODEL_URL, MODEL_PATH)
+    print("Model downloaded successfully.")
+
+# Load the model
+model = load_model(MODEL_PATH)
 
 # Define class labels
 class_labels = [
